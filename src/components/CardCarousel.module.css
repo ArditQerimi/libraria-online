@@ -1,0 +1,204 @@
+.latest_books__container {
+  background: #e0e4ed;
+  position: relative;
+  width: 100%;
+}
+.card_carousel__container {
+  padding: 10px 0;
+  display: flex;
+}
+
+.card_carousel__container950 {
+  padding: 10px 0;
+  display: none;
+}
+
+.card_carousel__container730 {
+  padding: 10px 0;
+  display: none;
+}
+
+.card_big__container {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+}
+
+.card__container {
+  width: 290px;
+  border: 1px solid #d61c4e;
+  background: #fff;
+  align-items: center;
+  overflow: hidden;
+  border-radius: 0.375rem;
+  box-shadow: 0px 5px 10px 0px rgba(214, 28, 78, 0.7);
+}
+
+.card__link {
+  text-decoration: none;
+  color: black;
+}
+
+.card_image__container {
+  border-bottom: 1px solid rgb(0 0 0 / 10%);
+  display: flex;
+  align-items: center;
+}
+
+.card_img {
+  width: 100%;
+  height: 280px;
+  object-fit: contain;
+}
+
+.card_description__container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.card_description__container > * {
+  margin: 10px;
+}
+
+.techs {
+  display: flex;
+}
+
+.techs > * {
+  margin: 10px 5px;
+}
+
+.tech {
+  color: #617d98;
+  background: #dae2ec;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.read_more__container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  height: 10%;
+  border-top: 1px solid #d61c4e;
+}
+
+.link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.read_more {
+  text-decoration: none;
+  color: #f5e8c7;
+  background: #d61c4e;
+  /* background: #411530; */
+  padding: 5px 10px;
+  border-radius: 10px;
+}
+
+.source_anchor {
+  text-decoration: none;
+}
+
+.carousel__buttons {
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  top: 0;
+}
+
+.carousel__buttons > * {
+  margin-left: 4px;
+  margin-right: 4px;
+}
+
+.carousel__buttons950 {
+  display: none;
+}
+
+.carousel__buttons950 > * {
+  margin-left: 4px;
+  margin-right: 4px;
+}
+
+.carousel__buttons730 {
+  display: none;
+}
+
+.carousel__buttons730 > * {
+  margin-left: 4px;
+  margin-right: 4px;
+}
+
+.carousel_btn {
+  color: #f5e8c7;
+  background: #411530;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.submitBtn {
+  color: #f5e8c7;
+  background: #411530;
+  border-radius: 10px;
+  padding: 10px;
+  width: 100px;
+  text-align: center;
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 950px) {
+  .card_carousel__container {
+    padding: 10px 0;
+    display: none;
+  }
+  .card_carousel__container950 {
+    padding: 10px 0;
+    display: flex;
+  }
+
+  .carousel__buttons {
+    display: none;
+  }
+
+  .carousel__buttons950 {
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    top: 0;
+  }
+}
+
+@media only screen and (max-width: 730px) {
+  .card_carousel__container950 {
+    display: none;
+  }
+
+  .carousel__buttons950 {
+    display: none;
+  }
+
+  .card_carousel__container730 {
+    padding: 10px 0;
+    display: flex;
+  }
+
+  .carousel__buttons730 {
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    top: 0;
+  }
+}
