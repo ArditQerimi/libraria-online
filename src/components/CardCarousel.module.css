@@ -3,6 +3,10 @@
   position: relative;
   width: 100%;
 }
+.latest_section__title {
+  text-align: center;
+}
+
 .card_carousel__container {
   padding: 10px 0;
   display: flex;

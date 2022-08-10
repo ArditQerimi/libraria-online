@@ -1,13 +1,12 @@
 import React from "react";
 import CardCarousel from "./CardCarousel";
 import HeroSection from "./HeroSection";
-import { cardsData } from "./MainPageData";
 
-const Body = () => {
+const Body = ({ cards, latestBook }) => {
   return (
     <>
       <HeroSection />
-      <CardCarousel data={cardsData} />
+      <CardCarousel cards={cards} latestBook={latestBook} />
     </>
   );
 };
