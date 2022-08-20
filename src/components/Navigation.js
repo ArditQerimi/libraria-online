@@ -22,8 +22,7 @@ const Navigation = () => {
   return (
     <>
       <div className={classes.navigation__container}>
-        {/* <div className={classes.brand__logo}>
-        Libraria online */}
+      
         <img
           src={
             "https://mlcook.lib.oh.us/sites/default/files/migrated/Libby-Logo.png"

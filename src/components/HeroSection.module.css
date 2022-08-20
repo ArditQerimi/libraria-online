@@ -2,7 +2,8 @@
   display: grid;
   grid-template-columns: 2fr 2fr;
   /* height: 500px; */
-  background: #d7c3d4;
+  /* background: #d7c3d4; */
+  background: #edf7f6;
 }
 
 .hero__container > * {
