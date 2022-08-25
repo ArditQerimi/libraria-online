@@ -28,7 +28,7 @@ const Inputs = ({
   setBook,
 }) => {
   const book = useSelector((state) => state.book);
-  console.log(book.id);
+  console.log(book);
 
   const dispatch = useDispatch();
   const handleChange = (event) => {
@@ -73,6 +73,13 @@ const Inputs = ({
       id,
       newobj,
     });
+    dispatch(
+      setBookSlice({
+        id: 0,
+        title: "",
+        image: "",
+      })
+    );
   };
   return (
     <div
@@ -102,7 +109,7 @@ const Inputs = ({
         type="text"
         placeholder="title.."
         name="title"
-        // value={book.title}
+        value={book.title}
         onChange={handleChange}
         // onChange={(e) => handleTitle(e)}
       />
@@ -110,7 +117,7 @@ const Inputs = ({
         type="text"
         placeholder="image.."
         name="image"
-        // value={book.image}
+        value={book.image}
         onChange={handleChange}
       />
       {/* <input
