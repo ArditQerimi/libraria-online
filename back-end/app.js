@@ -6,12 +6,19 @@ const mongoose = require("mongoose");
 dotenv.config();
 const morgan = require("morgan");
 const port = process.env.PORT || 8080;
+const bodyParser = require("body-parser");
 app.use(cors());
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(cors({ origin: true, credentials: true }));
 
 const url = process.env.MONGO_URI;
+
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
 
 mongoose
   .connect(url, {
@@ -23,14 +30,11 @@ mongoose
 
 // routes
 
-const latestBooksRouter = require("./routes/latestBooksRoute");
-app.use("/", latestBooksRouter);
+const booksRouter = require("./routes/booksRoute");
+const searchRouter = require("./routes/searchRoute");
+app.use("/", booksRouter);
+app.use("/", searchRouter);
 
-const findBookByIdRouter = require("./routes/latestBooksRoute");
-app.use("/", findBookByIdRouter);
-
-const latestBookPostRouter = require("./routes/latestBooksRoute");
-app.use("/", latestBookPostRouter);
 const server = app.listen(port, () =>
   console.log(`server is running on port ${port}`)
 );

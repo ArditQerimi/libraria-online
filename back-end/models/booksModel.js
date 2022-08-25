@@ -1,9 +1,7 @@
 const mongoose = require("mongoose");
 
-const RecentBooksSchema = mongoose.Schema(
+const BooksSchema = mongoose.Schema(
   {
-    // id: Number,
-    // cards: {
     id: Number,
     title: String,
     image: String,
@@ -13,9 +11,13 @@ const RecentBooksSchema = mongoose.Schema(
     date: String,
     reviews: String,
     category: String,
+    author: String,
+    description: String,
+    publisher: String,
+    lang: String,
+    price: Number,
   },
-  // },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("RecentBooks", RecentBooksSchema);
+module.exports = mongoose.model("Books", BooksSchema);
