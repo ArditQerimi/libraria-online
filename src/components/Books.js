@@ -1,97 +1,63 @@
 import React, { useEffect, useState } from "react";
-import classes from "./AllBooks.module.css";
-import { ImStarEmpty, ImStarFull, ImStarHalf } from "react-icons/im";
+import classes from "./Books.module.css";
+import {
+  ImStarEmpty,
+  ImStarFull,
+  ImStarHalf,
+  ImBoxRemove,
+} from "react-icons/im";
 import { BsHeart, BsFillHeartFill } from "react-icons/bs";
+import { MdDelete, MdEdit } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
+import { DELETE_BOOK, EDIT_BOOK } from "../redux/types/types";
+import { deleteBookSlice, editBookSlice } from "../redux/slice/books";
+import { setBookSlice } from "../redux/slice/book";
 
-const allbooks = [
-  {
-    id: 1,
-    image:
-      "https://th.bing.com/th/id/R.41baa82b36bd0ba73276ce6949c1363d?rik=LstEQ0ttBX5jRg&pid=ImgRaw&r=0",
-    title: "Chemistry Science",
-    rating: 3.3,
-    ratings: 140,
-    posted_by: "Ardit Qerimi",
-    date: "13/08/2022",
-    reviews: 30,
-    category: "Comic",
-  },
-  {
-    id: 2,
-    image:
-      "https://n2.sdlcdn.com/imgs/i/q/9/Textbook-Of-Physical-Chemistry-Vol-SDL770161936-1-f60d3.jpg",
-    title: "Physical Chemistry ",
-    rating: 3.5,
-    ratings: 164,
-    posted_by: "Ardit Qerimi",
-    date: "12/08/2022",
-    reviews: 35,
-    category: "Comic",
-  },
-  {
-    id: 3,
-    image:
-      "https://covers.zlibcdn2.com/covers/books/96/a4/c0/96a4c00f81adf50278329fd9cb1a6772.jpg",
-    title: "Indroductory Chemistry ",
-    rating: 3.55,
-    ratings: 156,
-    posted_by: "Ardit Qerimi",
-    date: "12/08/2022",
-    reviews: 63,
-    category: "Comic",
-  },
-  {
-    id: 4,
-    image:
-      "https://www.wisemansbookstrading.com/wp-content/uploads/2019/05/HANDBOOK-MANUAL-IN-FORENSIC-CHEMISTRY.jpg",
-    title: "Forensic Chemistry ",
-    rating: 3.95,
-    ratings: 186,
-    posted_by: "Ardit Qerimi",
-    date: "12/08/2022",
-    reviews: 83,
-    category: "Science",
-  },
-  {
-    id: 5,
-    image:
-      "https://gcecompilation.com/wp-content/uploads/2017/11/chemistry-696x918.jpg",
-    title: "Chemistry Matters ",
-    rating: 4.2,
-    ratings: 136,
-    posted_by: "Ardit Qerimi",
-    date: "12/08/2022",
-    reviews: 94,
-    category: "Science",
-  },
-  {
-    id: 6,
-    image:
-      "https://th.bing.com/th/id/R.56693c2ba815cdaedfa350e95dbef296?rik=9dRrhH2jYMnfpg&riu=http%3a%2f%2fimages.amazon.com%2fimages%2fP%2f0134347765.01.LZZZZZZZ.jpg&ehk=J8CtKr4OUXFKViFv8D6IdBzZc8DGBc6cLB5t0QIqHjM%3d&risl=&pid=ImgRaw&r=0&sres=1&sresct=1",
-    title: "Chemistry",
-    rating: 4.6,
-    ratings: 130,
-    posted_by: "Ardit Qerimi",
-    date: "12/08/2022",
-    reviews: 56,
-    category: "Science",
-  },
+const Books = ({
+  latestBooks,
+  categories,
+  category,
+  handleLang,
+  handlePrice,
+  lang,
+  price,
+  book,
+}) => {
+  const rows = useSelector((state) => state.book);
+  // console.log(rows);
 
-  {
-    id: 7,
-    image:
-      "https://th.bing.com/th/id/R.56693c2ba815cdaedfa350e95dbef296?rik=9dRrhH2jYMnfpg&riu=http%3a%2f%2fimages.amazon.com%2fimages%2fP%2f0134347765.01.LZZZZZZZ.jpg&ehk=J8CtKr4OUXFKViFv8D6IdBzZc8DGBc6cLB5t0QIqHjM%3d&risl=&pid=ImgRaw&r=0&sres=1&sresct=1",
-    title: "Chemistry",
-    rating: 4.1,
-    ratings: 130,
-    posted_by: "Ardit Qerimi",
-    date: "12/08/2022",
-    reviews: 56,
-    category: "Science",
-  },
-];
+  const dispatch = useDispatch();
 
-const AllBooks = ({ latestBooks, categories, category }) => {
+  const onDeleteCard = (id) => {
+    console.log(id);
+    dispatch(deleteBookSlice(id));
+    dispatch({
+      type: DELETE_BOOK,
+      id,
+    });
+  };
+
+  const [img, setImg] = useState("");
+
+  const [title, setTitle] = useState("");
+  const handleTitle = (title) => {
+    setTitle(title);
+  };
+
+  const onEditCard = (book, id) => {
+    const newobj = {
+      ...book,
+      title: title,
+      image: img,
+    };
+    dispatch(editBookSlice(newobj));
+    dispatch({
+      type: EDIT_BOOK,
+      id,
+      newobj,
+    });
+  };
+
   const [changeIndex, setChangeIndex] = useState(1);
 
   const increase = () => {
@@ -108,17 +74,6 @@ const AllBooks = ({ latestBooks, categories, category }) => {
     });
   };
 
-  // const filterCategory = () => {
-  //   // console.log(
-  //   //   latestBooks.map((category) =>
-  //   //     category.category.filter((cat) => cat.title === category)
-  //   //   )
-  //   // );
-  //   console.log(latestBooks.filter((cat) => cat.category === category));
-  //   return latestBooks.filter((cat) => cat.category === category);
-  // };
-  // filterCategory();
-
   const [addToFav, setAddToFav] = useState(false);
 
   const addToFavHandler = () => {
@@ -126,6 +81,7 @@ const AllBooks = ({ latestBooks, categories, category }) => {
   };
 
   const newBooksArr = [...latestBooks].reverse();
+  // console.log(newBooksArr);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [booksPerPage] = useState(6);
@@ -134,12 +90,13 @@ const AllBooks = ({ latestBooks, categories, category }) => {
   const indexOfFirstBook = indexOfLastBook - booksPerPage;
   const [filteredBooks, setFilteredBooks] = useState(newBooksArr);
   const currentBooks = filteredBooks.slice(indexOfFirstBook, indexOfLastBook);
-  console.log(filteredBooks);
+  // console.log(filteredBooks);
+  // console.log(currentBooks);
   const howManyPages = Math.ceil(filteredBooks.length / booksPerPage);
 
   let pages = howManyPages;
 
-  console.log("pages", pages);
+  // console.log("pages", pages);
 
   // console.log(currentBooks);
   // console.log(filteredBooks);
@@ -149,7 +106,7 @@ const AllBooks = ({ latestBooks, categories, category }) => {
   }, [latestBooks]);
 
   const handleCatFilter = (category) => {
-    const filter = currentBooks?.filter(
+    const filter = newBooksArr?.filter(
       (cat) => category != null && cat.category === category.title
       // typeof category != "undefined" ? cat.category === category.title : cat
     );
@@ -157,7 +114,7 @@ const AllBooks = ({ latestBooks, categories, category }) => {
   };
 
   const onReset = () => {
-    setFilteredBooks(currentBooks);
+    setFilteredBooks(newBooksArr);
   };
 
   const [keyword, setKeyword] = useState("");
@@ -165,20 +122,69 @@ const AllBooks = ({ latestBooks, categories, category }) => {
     setKeyword(keyword);
   };
 
+  const [author, setAuthor] = useState("");
+  const handleAuthor = (author) => {
+    setAuthor(author);
+  };
+
+  const [publisher, setPublisher] = useState("");
+  const handlePublisher = (publisher) => {
+    setPublisher(publisher);
+  };
+
   const onSearch = () => {
-    // console.log(keyword);
-    // const filter = currentBooks?.filter(
-    //   // (word) => keyword != null && word.title.toLowerCase() === keyword
-    //   (word) => console.log(`${word.title.toLowerCase()} === ${keyword}`)
-    // );
-    // console.log(filter);
-    // setFilteredBooks(filter);
-    // e.preventDefault();
-    const searchedKeyword = currentBooks.filter((book) =>
-      book.title.toLowerCase().includes(keyword.toLowerCase().trim())
-    );
-    // console.log(searchedKeyword);
-    setFilteredBooks(searchedKeyword);
+    if (
+      keyword !== "" ||
+      author !== "" ||
+      title !== "" ||
+      publisher !== "" ||
+      lang.length > 0 ||
+      price.length > 0
+    ) {
+      const searchedKeyword = newBooksArr.filter((book) =>
+        book.description.toLowerCase().includes(keyword.toLowerCase().trim())
+      );
+      const searchedAuthor = newBooksArr.filter((book) =>
+        book.author.toLowerCase().includes(author.toLowerCase().trim())
+      );
+      const searchedTitle = newBooksArr.filter((book) =>
+        book.title.toLowerCase().includes(title.toLowerCase().trim())
+      );
+      const searchedPublisher = newBooksArr.filter((book) =>
+        book.publisher.toLowerCase().includes(publisher.toLowerCase().trim())
+      );
+
+      const chooseLang = newBooksArr.filter((book) =>
+        book.lang
+          .toLowerCase()
+          .includes(lang !== "empty" ? lang.toLowerCase().trim() : "")
+      );
+
+      const data = [
+        searchedKeyword,
+        searchedAuthor,
+        searchedTitle,
+        searchedPublisher,
+        chooseLang,
+      ];
+      const result = data.reduce((acc, cur) =>
+        acc.filter((word) => cur.includes(word))
+      );
+
+      const priceSort = result.sort((a, b) => {
+        if (price !== "highest") {
+          return a.price - b.price;
+        } else if (price !== "lowest") {
+          return b.price - a.price;
+        } else {
+          return setFilteredBooks(newBooksArr);
+        }
+      });
+
+      // console.log(priceSort.map((p) => p.price));
+
+      setFilteredBooks(priceSort);
+    }
   };
 
   const numberOfBooks = [];
@@ -191,6 +197,10 @@ const AllBooks = ({ latestBooks, categories, category }) => {
   const [currentButton, setCurrentButton] = useState(1);
 
   const [arrOfCurrButtons, setArrOfCurrButtons] = useState([]);
+
+  useEffect(() => {
+    onSearch();
+  }, []);
 
   useEffect(() => {
     let tempNumberOfBooks = [...arrOfCurrButtons];
@@ -298,6 +308,8 @@ const AllBooks = ({ latestBooks, categories, category }) => {
                   id="author"
                   type="text"
                   placeholder="Author"
+                  value={author}
+                  onChange={(e) => handleAuthor(e.target.value)}
                 />
               </div>
               <div className={classes.input__container}>
@@ -310,6 +322,8 @@ const AllBooks = ({ latestBooks, categories, category }) => {
                   id="title"
                   type="text"
                   placeholder="Title"
+                  value={title}
+                  onChange={(e) => handleTitle(e.target.value)}
                 />
               </div>
               <div className={classes.input__container}>
@@ -322,6 +336,8 @@ const AllBooks = ({ latestBooks, categories, category }) => {
                   id="publisher"
                   type="text"
                   placeholder="Publisher"
+                  value={publisher}
+                  onChange={(e) => handlePublisher(e.target.value)}
                 />
               </div>
 
@@ -334,7 +350,13 @@ const AllBooks = ({ latestBooks, categories, category }) => {
                     id="price"
                     name="price"
                     className={classes.select__input}
+                    value={price}
+                    onChange={(e) => handlePrice(e)}
+                    // onClick={(e) => onSelectPrice(e.target.value)}
                   >
+                    <option className={classes.option__input}>
+                      Sort by price
+                    </option>
                     <option value="lowest" className={classes.option__input}>
                       Lowest
                     </option>
@@ -351,7 +373,12 @@ const AllBooks = ({ latestBooks, categories, category }) => {
                     id="language"
                     name="language"
                     className={classes.select__input}
+                    value={lang}
+                    onChange={(e) => handleLang(e)}
                   >
+                    <option value="empty" className={classes.option__input}>
+                      Select languague
+                    </option>
                     <option value="english">English</option>
                     <option value="albanian">Albanian</option>
                   </select>
@@ -403,8 +430,6 @@ const AllBooks = ({ latestBooks, categories, category }) => {
             onClick={increase}
             src="https://img.icons8.com/ios-glyphs/30/d61c4e/right-squared.png"
           />
-
-          {/* <FaChevronRight /> */}
         </div>
         <div className={classes.categories__list}>
           {categories?.map((category, index) => {
@@ -426,122 +451,155 @@ const AllBooks = ({ latestBooks, categories, category }) => {
         <div className={classes.books}>
           <div className={classes.books_list}>
             <div className={classes.books_cards}>
-              {/* {console.log(
-                typeof filteredBooks !== "undefined"
-                  ? filteredBooks
-                  : currentBooks
-              )}
-              {console.log(filteredBooks)} */}
-              {
-                // (filteredBooks.length > 0 ? filteredBooks : currentBooks)
-                currentBooks.map((book, index) => {
-                  return (
-                    <div
-                      key={index}
-                      className={classes.book_card_big__container}
-                    >
-                      <div className={classes.read_more__button__container}>
-                        <div className={classes.read_more_btn}>Read More</div>
+              {currentBooks.map((book, index) => {
+                return (
+                  <div
+                    key={index}
+                    className={classes.book_card_big__container}
+                    // onClick={() => onDeleteCard(book._id)}
+                  >
+                    <div className={classes.read_more__button__container}>
+                      <div
+                        className={classes.read_more_btn}
+                        onClick={() => onEditCard(book, book._id)}
+                      >
+                        Read More
                       </div>
-                      <div className={classes.book_card__container}>
-                        <div className={classes.image__container}>
-                          <img
-                            src={book.image}
-                            className={classes.card__image}
+                      {/* <div style={{ display: "flex", flexDirection: "column" }}>
+                        <input
+                          type="text"
+                          placeholder="title"
+                          value={title}
+                          onChange={(e) => handleTitle(e.target.value)}
+                        />
+                        <input
+                          type="text"
+                          placeholder="img"
+                          value={img}
+                          onChange={(e) => setImg(e.target.value)}
+                        />
+                      </div> */}
+                    </div>
+                    <div className={classes.book_card__container}>
+                      <div className={classes.image__container}>
+                        <img src={book.image} className={classes.card__image} />
+                        <div className={classes.overlay}></div>
+                        <div className={classes.add_to_fav_box}>
+                          {!addToFav ? (
+                            <BsHeart
+                              onClick={addToFavHandler}
+                              className={classes.add_to_fav}
+                            />
+                          ) : (
+                            <BsFillHeartFill
+                              onClick={addToFavHandler}
+                              className={classes.add_to_fav}
+                            />
+                          )}
+                          <MdDelete
+                            onClick={() => onDeleteCard(book._id)}
+                            className={classes.delete_card}
                           />
-                          <div className={classes.overlay}></div>
-                          <div
-                            className={classes.add_to_fav_box}
-                            onClick={addToFavHandler}
-                          >
-                            {!addToFav ? (
-                              <BsHeart className={classes.add_to_fav} />
-                            ) : (
-                              <BsFillHeartFill className={classes.add_to_fav} />
-                            )}
-                          </div>
+                          <MdEdit
+                            onClick={() => dispatch(setBookSlice(book))}
+                            // onClick={() => onDeleteCard(book._id)}
+                            className={classes.edit_card}
+                          />
                         </div>
-                        <div className={classes.description__container}>
-                          <div className={classes.title}>{book.title}</div>
-                          <div className={classes.rating}>
-                            {[...Array(Math.floor(book.rating))].map(
-                              (star, index) => {
-                                return (
-                                  <div key={`${book.id}-${index}`}>
-                                    <ImStarFull className={classes.star} />
-                                  </div>
-                                );
-                              }
-                            )}
+                        {/* <div
+                          className={classes.delete_card}
+                          onClick={onDeleteCard}
+                        ></div> */}
+                      </div>
+                      <div className={classes.description__container}>
+                        <div className={classes.title}>{book.title}</div>
+                        {typeof book.rating !== "undefined" ? (
+                          book.rating !== 0 && (
+                            <div className={classes.rating}>
+                              {[...Array(Math.floor(book.rating))].map(
+                                (star, index) => {
+                                  return (
+                                    <div key={`${book.id}-${index}`}>
+                                      <ImStarFull className={classes.star} />
+                                    </div>
+                                  );
+                                }
+                              )}
 
-                            {Math.round(book.rating - Math.floor(book.rating)) >
-                            0.5 ? (
-                              [
+                              {Math.round(
+                                book.rating - Math.floor(book.rating)
+                              ) > 0.5 ? (
+                                [
+                                  ...Array(
+                                    Math.round(
+                                      book.rating - Math.floor(book.rating)
+                                    )
+                                  ),
+                                ].map((star, index) => {
+                                  return (
+                                    <div key={`${book.id}-${index}`}>
+                                      <ImStarHalf className={classes.star} />
+                                    </div>
+                                  );
+                                })
+                              ) : (
+                                <ImStarEmpty className={classes.star} />
+                              )}
+
+                              {[
                                 ...Array(
-                                  Math.round(
-                                    book.rating - Math.floor(book.rating)
+                                  Math.floor(
+                                    5 -
+                                      (book.rating - Math.floor(book.rating)) -
+                                      Math.floor(book.rating)
                                   )
                                 ),
                               ].map((star, index) => {
                                 return (
                                   <div key={`${book.id}-${index}`}>
-                                    <ImStarHalf className={classes.star} />
+                                    <ImStarEmpty className={classes.star} />
                                   </div>
                                 );
-                              })
-                            ) : (
-                              <ImStarEmpty className={classes.star} />
-                            )}
-
-                            {[
-                              ...Array(
-                                Math.floor(
-                                  5 -
-                                    (book.rating - Math.floor(book.rating)) -
-                                    Math.floor(book.rating)
-                                )
-                              ),
-                            ].map((star, index) => {
-                              return (
-                                <div key={`${book.id}-${index}`}>
-                                  <ImStarEmpty className={classes.star} />
-                                </div>
-                              );
-                            })}
-                            <div className={classes.rating_number}>
-                              {book.rating}({book.ratings})
+                              })}
+                              <div className={classes.rating_number}>
+                                {book.rating}({book.ratings})
+                              </div>
                             </div>
-                          </div>
-                          <div className={classes.posted_by}>
-                            Posted by:{" "}
-                            <span className={classes.posted_by_name}>
-                              {book.posted_by}
-                            </span>
-                          </div>
-                          <div className={classes.posted_date__container}>
-                            Date:{" "}
-                            <span className={classes.posted_date}>
-                              {book.date}
-                            </span>
-                          </div>
-                          <div className={classes.reviews_container}>
-                            Reviews:{" "}
-                            <span className={classes.no_reviews}>
-                              {book.reviews}
-                            </span>
-                          </div>
-                          {/* <div className={classes.reviews_container}>
+                          )
+                        ) : (
+                          <></>
+                        )}
+                        <div className={classes.posted_by}>
+                          Posted by:{" "}
+                          <span className={classes.posted_by_name}>
+                            {book.posted_by}
+                          </span>
+                        </div>
+                        <div className={classes.posted_date__container}>
+                          Date:{" "}
+                          <span className={classes.posted_date}>
+                            {book.date}
+                          </span>
+                        </div>
+                        <div className={classes.reviews_container}>
+                          Reviews:{" "}
+                          <span className={classes.no_reviews}>
+                            {book.reviews}
+                          </span>
+                        </div>
+                        {/* {book.price}
+                        <div>{book.lang}</div> */}
+                        {/* <div className={classes.reviews_container}>
                             Category:{" "}
                             <span className={classes.no_reviews}>
                               {book.category}
                             </span>
                           </div> */}
-                        </div>
                       </div>
                     </div>
-                  );
-                })
-              }
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -554,18 +612,7 @@ const AllBooks = ({ latestBooks, categories, category }) => {
 //////////////////////////////////////////////////////////// */}
 
         <div className={classes.pagination__container}>
-          {/* <a
-            href="#"
-            className={`${currentButton === 1 ? "disabled" : ""}`}
-            onClick={() =>
-              setCurrentButton((prev) => (prev <= 1 ? prev : prev - 1))
-            }
-          >
-            Prev
-          </a> */}
-
           {arrOfCurrButtons.map((item, index) => {
-            // console.log(item, index);
             return (
               <div
                 key={index}
@@ -574,7 +621,6 @@ const AllBooks = ({ latestBooks, categories, category }) => {
               >
                 <a
                   key={item}
-                  // className={`${currentButton === item ? "active" : ""}`}
                   className={classes.pagination__number}
                   href=""
                   target="_blank"
@@ -584,31 +630,10 @@ const AllBooks = ({ latestBooks, categories, category }) => {
               </div>
             );
           })}
-          {/* 
-          <a
-            href="#"
-            className={`${
-              currentButton === numberOfBooks.length ? "disabled" : ""
-            }`}
-            onClick={() =>
-              setCurrentButton((prev) =>
-                prev >= numberOfBooks.length ? prev : prev + 1
-              )
-            }
-          >
-            Next
-          </a> */}
         </div>
-
-        {/* <div style={{ display: "flex" }}>
-          {setStars()}
-          {setHalfStar()}
-          {setEmptyStar()}
-        </div> */}
-        {/* <div style={{ display: "flex" }}>{allStars()}</div> */}
       </div>
     </div>
   );
 };
 
-export default AllBooks;
+export default Books;

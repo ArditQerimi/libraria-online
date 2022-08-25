@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import className from "./CardCarousel.module.css";
+import className from "./Latest.module.css";
 import axios from "axios";
 
 import { BsBook } from "react-icons/bs";
@@ -104,10 +104,9 @@ const CardCarousel = ({ cards, latestBooks, setLatestBooks }) => {
     <>
       <>
         <div className={className.latest_books__container}>
-          <h1 className={className.latest_section__title}>Latest books</h1>
-
           {latestBooks.length > 0 ? (
             <>
+              <h1 className={className.latest_section__title}>Latest books</h1>
               <div className={className.card_carousel__container}>
                 {newCard?.map((card, index) => {
                   return (

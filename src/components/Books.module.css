@@ -183,7 +183,7 @@
 .books {
   /* height: 90%; */
   /* background: #d7c3d4; */
-  padding: 40px 0;
+  padding: 80px 0;
 }
 
 .categories__container_resize_mode {
@@ -331,27 +331,47 @@
 
 .add_to_fav_box {
   background: #fff;
-  /* border: 1px solid #fff; */
   z-index: 9999;
   display: none;
   box-shadow: 0 0 35px rgba(255, 255, 255, 0.3);
 }
 
-.add_to_fav {
+.delete_card_box {
+  background: #fff;
+  z-index: 9999;
+  display: none;
+  box-shadow: 0 0 35px rgba(255, 255, 255, 0.3);
+}
+
+.add_to_fav,
+.delete_card,
+.edit_card {
   position: absolute;
   color: #d61c4e;
   width: 20px;
   height: 25px;
-  top: 5px;
-  right: 5px;
   padding: 7px;
   cursor: pointer;
   z-index: 9999;
   background: #fff;
   border: 1px solid #fff;
   border-radius: 10px;
-  /* box-shadow: 0px 0px 10px rgba(214, 28, 78, 0.7); */
   box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+}
+
+.add_to_fav {
+  top: 5px;
+  left: 5px;
+}
+
+.delete_card {
+  top: 5px;
+  right: 5px;
+}
+
+.edit_card {
+  bottom: 10px;
+  right: 5px;
 }
 
 .card_footer {

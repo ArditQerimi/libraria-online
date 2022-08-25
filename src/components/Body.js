@@ -1,9 +1,9 @@
-import React from "react";
-import AllBooks from "./AllBooks";
-import CardCarousel from "./CardCarousel";
-import HeroSection from "./HeroSection";
-import TestInputs from "./TestInputs";
-
+import React, { useState, useEffect } from "react";
+import Books from "./Books";
+import Latest from "./Latest";
+import Hero from "./Hero";
+import Inputs from "./Inputs";
+import axios from "axios";
 const Body = ({
   cards,
   latestBooks,
@@ -15,26 +15,53 @@ const Body = ({
   handleImg,
   author,
   handleAuthor,
-
+  description,
+  handleDescription,
+  publisher,
+  handlePublisher,
   category,
   setCategory,
   handleCategory,
   categories,
+  lang,
+  setLang,
+  price,
+  setPrice,
+  handleLang,
+  handlePrice,
+  onSearchRemove,
+  book,
+  setBook,
 }) => {
   return (
     <>
-      <HeroSection />
-      <CardCarousel
+      <Hero
+        latestBooks={latestBooks}
+        setLatestBooks={setLatestBooks}
+        // data={data}
+        // searchTerm={searchTerm}
+        // handleSearch={handleSearch}
+        // setData={setData}
+      />
+      <Latest
         cards={cards}
         latestBooks={latestBooks}
         setLatestBooks={setLatestBooks}
+        book={book}
       />
-      <AllBooks
+      <Books
         latestBooks={latestBooks}
         categories={categories}
         category={category}
+        lang={lang}
+        setLang={setLang}
+        price={price}
+        setPrice={setPrice}
+        handleLang={handleLang}
+        handlePrice={handlePrice}
+        book={book}
       />
-      <TestInputs
+      <Inputs
         onNewCard={onNewCard}
         title={title}
         handleTitle={handleTitle}
@@ -46,6 +73,17 @@ const Body = ({
         categories={categories}
         author={author}
         handleAuthor={handleAuthor}
+        publisher={publisher}
+        handlePublisher={handlePublisher}
+        description={description}
+        handleDescription={handleDescription}
+        lang={lang}
+        setLang={setLang}
+        price={price}
+        setPrice={setPrice}
+        handleLang={handleLang}
+        handlePrice={handlePrice}
+        setBook={setBook}
       />
     </>
   );
