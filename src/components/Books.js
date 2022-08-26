@@ -10,7 +10,12 @@ import { BsHeart, BsFillHeartFill } from "react-icons/bs";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { DELETE_BOOK, EDIT_BOOK } from "../redux/types/types";
-import { deleteBookSlice, editBookSlice } from "../redux/slice/books";
+import {
+  deleteBookSlice,
+  editBookSlice,
+  getBooksFetch,
+  getBooksError,
+} from "../redux/slice/books";
 import { setBookSlice } from "../redux/slice/book";
 
 const Books = ({
@@ -23,13 +28,14 @@ const Books = ({
   price,
   book,
 }) => {
-  const rows = useSelector((state) => state.book);
-  // console.log(rows);
+  const state = useSelector((state) => state.books);
+
+  const loading = state.isLoading;
+  const error = state.error;
 
   const dispatch = useDispatch();
 
   const onDeleteCard = (id) => {
-    console.log(id);
     dispatch(deleteBookSlice(id));
     dispatch({
       type: DELETE_BOOK,
@@ -450,22 +456,32 @@ const Books = ({
         </div>
         <div className={classes.books}>
           <div className={classes.books_list}>
-            <div className={classes.books_cards}>
-              {currentBooks.map((book, index) => {
-                return (
-                  <div
-                    key={index}
-                    className={classes.book_card_big__container}
-                    // onClick={() => onDeleteCard(book._id)}
-                  >
-                    <div className={classes.read_more__button__container}>
-                      <div
-                        className={classes.read_more_btn}
-                        onClick={() => onEditCard(book, book._id)}
-                      >
-                        Read More
-                      </div>
-                      {/* <div style={{ display: "flex", flexDirection: "column" }}>
+            {error && (
+              <div className={classes.error_message__container}>
+                <div className={classes.error_message}>ERROR OCCURED!</div>
+              </div>
+            )}
+            {loading ? (
+              <div className={classes.loading_message__container}>
+                <div className={classes.loading_message}>LOADING!...</div>
+              </div>
+            ) : (
+              <div className={classes.books_cards}>
+                {currentBooks.map((book, index) => {
+                  return (
+                    <div
+                      key={index}
+                      className={classes.book_card_big__container}
+                      // onClick={() => onDeleteCard(book._id)}
+                    >
+                      <div className={classes.read_more__button__container}>
+                        <div
+                          className={classes.read_more_btn}
+                          onClick={() => onEditCard(book, book._id)}
+                        >
+                          Read More
+                        </div>
+                        {/* <div style={{ display: "flex", flexDirection: "column" }}>
                         <input
                           type="text"
                           placeholder="title"
@@ -479,128 +495,133 @@ const Books = ({
                           onChange={(e) => setImg(e.target.value)}
                         />
                       </div> */}
-                    </div>
-                    <div className={classes.book_card__container}>
-                      <div className={classes.image__container}>
-                        <img src={book.image} className={classes.card__image} />
-                        <div className={classes.overlay}></div>
-                        <div className={classes.add_to_fav_box}>
-                          {!addToFav ? (
-                            <BsHeart
-                              onClick={addToFavHandler}
-                              className={classes.add_to_fav}
-                            />
-                          ) : (
-                            <BsFillHeartFill
-                              onClick={addToFavHandler}
-                              className={classes.add_to_fav}
-                            />
-                          )}
-                          <MdDelete
-                            onClick={() => onDeleteCard(book._id)}
-                            className={classes.delete_card}
+                      </div>
+                      <div className={classes.book_card__container}>
+                        <div className={classes.image__container}>
+                          <img
+                            src={book.image}
+                            className={classes.card__image}
                           />
-                          <MdEdit
-                            onClick={() => dispatch(setBookSlice(book))}
-                            // onClick={() => onDeleteCard(book._id)}
-                            className={classes.edit_card}
-                          />
-                        </div>
-                        {/* <div
+                          <div className={classes.overlay}></div>
+                          <div className={classes.add_to_fav_box}>
+                            {!addToFav ? (
+                              <BsHeart
+                                onClick={addToFavHandler}
+                                className={classes.add_to_fav}
+                              />
+                            ) : (
+                              <BsFillHeartFill
+                                onClick={addToFavHandler}
+                                className={classes.add_to_fav}
+                              />
+                            )}
+                            <MdDelete
+                              onClick={() => onDeleteCard(book._id)}
+                              className={classes.delete_card}
+                            />
+                            <MdEdit
+                              onClick={() => dispatch(setBookSlice(book))}
+                              // onClick={() => onDeleteCard(book._id)}
+                              className={classes.edit_card}
+                            />
+                          </div>
+                          {/* <div
                           className={classes.delete_card}
                           onClick={onDeleteCard}
                         ></div> */}
-                      </div>
-                      <div className={classes.description__container}>
-                        <div className={classes.title}>{book.title}</div>
-                        {typeof book.rating !== "undefined" ? (
-                          book.rating !== 0 && (
-                            <div className={classes.rating}>
-                              {[...Array(Math.floor(book.rating))].map(
-                                (star, index) => {
-                                  return (
-                                    <div key={`${book.id}-${index}`}>
-                                      <ImStarFull className={classes.star} />
-                                    </div>
-                                  );
-                                }
-                              )}
+                        </div>
+                        <div className={classes.description__container}>
+                          <div className={classes.title}>{book.title}</div>
+                          {typeof book.rating !== "undefined" ? (
+                            book.rating !== 0 && (
+                              <div className={classes.rating}>
+                                {[...Array(Math.floor(book.rating))].map(
+                                  (star, index) => {
+                                    return (
+                                      <div key={`${book.id}-${index}`}>
+                                        <ImStarFull className={classes.star} />
+                                      </div>
+                                    );
+                                  }
+                                )}
 
-                              {Math.round(
-                                book.rating - Math.floor(book.rating)
-                              ) > 0.5 ? (
-                                [
+                                {Math.round(
+                                  book.rating - Math.floor(book.rating)
+                                ) > 0.5 ? (
+                                  [
+                                    ...Array(
+                                      Math.round(
+                                        book.rating - Math.floor(book.rating)
+                                      )
+                                    ),
+                                  ].map((star, index) => {
+                                    return (
+                                      <div key={`${book.id}-${index}`}>
+                                        <ImStarHalf className={classes.star} />
+                                      </div>
+                                    );
+                                  })
+                                ) : (
+                                  <ImStarEmpty className={classes.star} />
+                                )}
+
+                                {[
                                   ...Array(
-                                    Math.round(
-                                      book.rating - Math.floor(book.rating)
+                                    Math.floor(
+                                      5 -
+                                        (book.rating -
+                                          Math.floor(book.rating)) -
+                                        Math.floor(book.rating)
                                     )
                                   ),
                                 ].map((star, index) => {
                                   return (
                                     <div key={`${book.id}-${index}`}>
-                                      <ImStarHalf className={classes.star} />
+                                      <ImStarEmpty className={classes.star} />
                                     </div>
                                   );
-                                })
-                              ) : (
-                                <ImStarEmpty className={classes.star} />
-                              )}
-
-                              {[
-                                ...Array(
-                                  Math.floor(
-                                    5 -
-                                      (book.rating - Math.floor(book.rating)) -
-                                      Math.floor(book.rating)
-                                  )
-                                ),
-                              ].map((star, index) => {
-                                return (
-                                  <div key={`${book.id}-${index}`}>
-                                    <ImStarEmpty className={classes.star} />
-                                  </div>
-                                );
-                              })}
-                              <div className={classes.rating_number}>
-                                {book.rating}({book.ratings})
+                                })}
+                                <div className={classes.rating_number}>
+                                  {book.rating}({book.ratings})
+                                </div>
                               </div>
-                            </div>
-                          )
-                        ) : (
-                          <></>
-                        )}
-                        <div className={classes.posted_by}>
-                          Posted by:{" "}
-                          <span className={classes.posted_by_name}>
-                            {book.posted_by}
-                          </span>
-                        </div>
-                        <div className={classes.posted_date__container}>
-                          Date:{" "}
-                          <span className={classes.posted_date}>
-                            {book.date}
-                          </span>
-                        </div>
-                        <div className={classes.reviews_container}>
-                          Reviews:{" "}
-                          <span className={classes.no_reviews}>
-                            {book.reviews}
-                          </span>
-                        </div>
-                        {/* {book.price}
+                            )
+                          ) : (
+                            <></>
+                          )}
+                          <div className={classes.posted_by}>
+                            Posted by:{" "}
+                            <span className={classes.posted_by_name}>
+                              {book.posted_by}
+                            </span>
+                          </div>
+                          <div className={classes.posted_date__container}>
+                            Date:{" "}
+                            <span className={classes.posted_date}>
+                              {book.date}
+                            </span>
+                          </div>
+                          <div className={classes.reviews_container}>
+                            Reviews:{" "}
+                            <span className={classes.no_reviews}>
+                              {book.reviews}
+                            </span>
+                          </div>
+                          {/* {book.price}
                         <div>{book.lang}</div> */}
-                        {/* <div className={classes.reviews_container}>
+                          {/* <div className={classes.reviews_container}>
                             Category:{" "}
                             <span className={classes.no_reviews}>
                               {book.category}
                             </span>
                           </div> */}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                );
-              })}
-            </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </div>
 

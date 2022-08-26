@@ -28,7 +28,7 @@ const Inputs = ({
   setBook,
 }) => {
   const book = useSelector((state) => state.book);
-  console.log(book);
+  // console.log(book);
 
   const dispatch = useDispatch();
   const handleChange = (event) => {

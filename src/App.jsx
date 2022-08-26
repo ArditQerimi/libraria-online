@@ -6,11 +6,13 @@ import Body from "./components/Body";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { GET_BOOKS, POST_BOOKS } from "./redux/types/types";
+import { getBooksFetch } from "./redux/slice/books";
 function App() {
   const rows = useSelector((state) => state.books);
 
   const dispatch = useDispatch();
   useEffect(() => dispatch({ type: GET_BOOKS }), []);
+  console.log(rows.books);
 
   // console.log(rows);
   const [edit, setEdit] = useState(false);
@@ -173,7 +175,7 @@ function App() {
       <Navigation />
       <Body
         cards={cards}
-        latestBooks={rows}
+        latestBooks={rows.books}
         setLatestBooks={setLatestBooks}
         onNewCard={onNewCard}
         title={title}

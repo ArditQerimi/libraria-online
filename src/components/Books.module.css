@@ -211,6 +211,40 @@
   position: relative;
 }
 
+.error_message__container,
+.loading_message__container {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.error_message,
+.loading_message {
+  padding: 30px;
+  font-size: 38px;
+  font-weight: 700;
+  text-align: center;
+  width: 500px;
+  height: 100px;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.error_message {
+  color: #d61c4e;
+  background: #fff;
+  border: 5px solid #d61c4e;
+}
+
+.loading_message {
+  color: #0096ff;
+  background: #fff;
+  border: 5px solid #0096ff;
+}
+
 .book_card_big__container {
   position: relative;
   display: flex;
@@ -448,10 +482,6 @@
 .book_card_big__container:hover .read_more__button__container {
   display: flex;
 }
-
-/* .rating > * {
-  padding: 2px;
-} */
 
 /* /////////////////////////////////////////// */
 /* //////////////// MEDIA QUERY /////////////// */

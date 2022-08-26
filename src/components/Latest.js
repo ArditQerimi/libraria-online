@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from "react";
 import className from "./Latest.module.css";
+import classes from "./Latest.module.css";
 import axios from "axios";
 
 import { BsBook } from "react-icons/bs";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
 
 const CardCarousel = ({ cards, latestBooks, setLatestBooks }) => {
+  const state = useSelector((state) => state.books);
+
+  const loading = state.isLoading;
+  const error = state.error;
+
   const [newCard, setNewCard] = useState([]);
   const [newCard950, setNewCard950] = useState([]);
   const [newCard730, setNewCard730] = useState([]);
@@ -104,9 +111,18 @@ const CardCarousel = ({ cards, latestBooks, setLatestBooks }) => {
     <>
       <>
         <div className={className.latest_books__container}>
-          {latestBooks.length > 0 ? (
+          <h1 className={className.latest_section__title}>Latest books</h1>
+          {error && (
+            <div className={classes.error_message__container}>
+              <div className={classes.error_message}>ERROR OCCURED!</div>
+            </div>
+          )}
+          {loading ? (
+            <div className={classes.loading_message__container}>
+              <div className={classes.loading_message}>LOADING!...</div>
+            </div>
+          ) : (
             <>
-              <h1 className={className.latest_section__title}>Latest books</h1>
               <div className={className.card_carousel__container}>
                 {newCard?.map((card, index) => {
                   return (
@@ -303,17 +319,6 @@ const CardCarousel = ({ cards, latestBooks, setLatestBooks }) => {
                 />
               </div>
             </>
-          ) : (
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                height: "100%",
-              }}
-            >
-              Internet connection lost! Or there isn't posted any book yet!
-            </div>
           )}
         </div>
       </>
