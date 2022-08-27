@@ -46,6 +46,7 @@ const Books = ({
   const [img, setImg] = useState("");
 
   const [title, setTitle] = useState("");
+  // console.log(title);
   const handleTitle = (title) => {
     setTitle(title);
   };
@@ -147,24 +148,34 @@ const Books = ({
       lang.length > 0 ||
       price.length > 0
     ) {
-      const searchedKeyword = newBooksArr.filter((book) =>
-        book.description.toLowerCase().includes(keyword.toLowerCase().trim())
+      const searchedKeyword = newBooksArr.filter((book) => {
+        return book.description
+          ?.toLowerCase()
+          .includes(keyword.toLowerCase().trim());
+      });
+      const searchedAuthor = newBooksArr.filter((book) => {
+        return book.author?.toLowerCase().includes(author.toLowerCase().trim());
+      });
+      console.log(title);
+      const searchedTitle = newBooksArr.filter((book) => {
+        return book.title?.toLowerCase().includes(title.toLowerCase().trim());
+      });
+      console.log(
+        newBooksArr.filter((book) => {
+          return book.title?.toLowerCase().includes(title.toLowerCase().trim());
+        })
       );
-      const searchedAuthor = newBooksArr.filter((book) =>
-        book.author.toLowerCase().includes(author.toLowerCase().trim())
-      );
-      const searchedTitle = newBooksArr.filter((book) =>
-        book.title.toLowerCase().includes(title.toLowerCase().trim())
-      );
-      const searchedPublisher = newBooksArr.filter((book) =>
-        book.publisher.toLowerCase().includes(publisher.toLowerCase().trim())
-      );
+      const searchedPublisher = newBooksArr.filter((book) => {
+        return book.publisher
+          ?.toLowerCase()
+          .includes(publisher.toLowerCase().trim());
+      });
 
-      const chooseLang = newBooksArr.filter((book) =>
-        book.lang
-          .toLowerCase()
-          .includes(lang !== "empty" ? lang.toLowerCase().trim() : "")
-      );
+      const chooseLang = newBooksArr.filter((book) => {
+        return book.lang
+          ?.toLowerCase()
+          .includes(lang !== "empty" ? lang.toLowerCase().trim() : "");
+      });
 
       const data = [
         searchedKeyword,
@@ -173,6 +184,9 @@ const Books = ({
         searchedPublisher,
         chooseLang,
       ];
+
+      console.log(data);
+
       const result = data.reduce((acc, cur) =>
         acc.filter((word) => cur.includes(word))
       );
