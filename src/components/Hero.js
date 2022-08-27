@@ -2,32 +2,14 @@ import React, { useEffect, useState } from "react";
 import classes from "./Hero.module.css";
 import axios from "axios";
 
-const arr = [
-  {
-    name: "Arditi",
-  },
-  {
-    name: "Besmira",
-  },
-  {
-    name: "Arditi",
-  },
-  {
-    name: "Arditi",
-  },
-  {
-    name: "Arditi",
-  },
-  {
-    name: "Arditi",
-  },
-];
-
 const HeroSection = (props) => {
   const [searchTerm, setSearchTerm] = useState("");
+  console.log(searchTerm);
   const [data, setData] = useState();
-  const handleSearch = (searchTerm) => {
-    setSearchTerm(searchTerm);
+  const handleSearch = (e) => {
+    e.stopPropagation();
+
+    setSearchTerm(e.target.value);
   };
 
   async function fetchData() {
@@ -36,19 +18,23 @@ const HeroSection = (props) => {
     );
     console.log(req.data.products);
     const data = req.data.products;
-    setData(data);
+    setData(data.reverse());
   }
 
-  const onSearchRemove = () => {
+  const onSearchRemove = (e) => {
+    // console.log(e);
+    e.stopPropagation();
     setData([]);
   };
 
   const [indexNum, setIndexNum] = useState(5);
 
-  const handleIndex10 = () => {
+  const handleIndex10 = (e) => {
+    e.stopPropagation();
     setIndexNum(10);
   };
-  const handleIndex5 = () => {
+  const handleIndex5 = (e) => {
+    e.stopPropagation();
     setIndexNum(5);
   };
 
@@ -69,7 +55,7 @@ const HeroSection = (props) => {
               placeholder="Search for your book.."
               className={classes.search__input}
               value={searchTerm}
-              onChange={(e) => handleSearch(e.target.value)}
+              onChange={(e) => handleSearch(e)}
             />
             {data != null && (
               <div className={classes.search_dropdown__container}>

@@ -175,7 +175,7 @@ function App() {
       <Navigation />
       <Body
         cards={cards}
-        latestBooks={rows.books}
+        latestBooks={rows?.books?.slice(-9).reverse()}
         setLatestBooks={setLatestBooks}
         onNewCard={onNewCard}
         title={title}

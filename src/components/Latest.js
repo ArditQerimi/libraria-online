@@ -7,102 +7,59 @@ import { BsBook } from "react-icons/bs";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 
+const innerWidth = window.innerWidth;
 const CardCarousel = ({ cards, latestBooks, setLatestBooks }) => {
+  const [multiplier, setMultiplier] = useState(
+    innerWidth > 1000 ? 3 : innerWidth > 730 ? 2 : 1
+  );
+  const [changeIndex, setChangeIndex] = useState(0);
   const state = useSelector((state) => state.books);
 
   const loading = state.isLoading;
   const error = state.error;
-
   const [newCard, setNewCard] = useState([]);
-  const [newCard950, setNewCard950] = useState([]);
-  const [newCard730, setNewCard730] = useState([]);
+  useEffect(() => {
+    function handleWindowResize() {
+      const { innerWidth } = window;
+      setMultiplier(innerWidth > 1000 ? 3 : innerWidth > 730 ? 2 : 1);
+    }
+
+    window.addEventListener("resize", handleWindowResize);
+
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, []);
 
   useEffect(() => {
-    setNewCard([
-      { id: Math.random(), cards: latestBooks.slice(-3).reverse() },
-      {
-        id: Math.random(),
-        cards: latestBooks.slice(-6, -3).reverse(),
-      },
-    ]);
+    // console.log(changeIndex);
+    // console.log(changeIndex * 3, changeIndex * 3 + 3 - 1);
 
-    setNewCard950([
-      { id: Math.random(), cards: latestBooks.slice(-2).reverse() },
-      {
-        id: Math.random(),
-        cards: latestBooks.slice(-4, -2).reverse(),
-      },
-      {
-        id: Math.random(),
-        cards: latestBooks.slice(-6, -4).reverse(),
-      },
-    ]);
+    setNewCard(
+      latestBooks.slice(
+        changeIndex * multiplier,
+        (changeIndex + 1) * multiplier
+      )
+    );
+  }, [changeIndex, multiplier, latestBooks]);
 
-    setNewCard730([
-      { id: Math.random(), cards: latestBooks.slice(-1) },
-      {
-        id: Math.random(),
-        cards: latestBooks.slice(-2, -1),
-      },
-      {
-        id: Math.random(),
-        cards: latestBooks.slice(-3, -2),
-      },
-      {
-        id: Math.random(),
-        cards: latestBooks.slice(-4, -3),
-      },
-      {
-        id: Math.random(),
-        cards: latestBooks.slice(-5, -4),
-      },
-      {
-        id: Math.random(),
-        cards: latestBooks.slice(-6, -5),
-      },
-    ]);
-  }, [latestBooks]);
-
-  const [changeIndex, setChangeIndex] = useState(0);
+  useEffect(() => {
+    setChangeIndex(0);
+  }, [multiplier]);
 
   const increase = () => {
     setChangeIndex((prevState) => {
-      if (prevState >= newCard.length - 1) return (prevState = 0);
-      else return (prevState += 1);
+      console.log(prevState, latestBooks.length / multiplier - 1);
+      if (prevState < Math.ceil(latestBooks.length / multiplier) - 1)
+        return (prevState += 1);
+      else return 0;
     });
   };
 
   const decrease = () => {
     setChangeIndex((prevState) => {
-      if (prevState < 1) return (prevState = newCard.length - 1);
-      else return (prevState -= 1);
-    });
-  };
-
-  const increase950 = () => {
-    setChangeIndex((prevState) => {
-      if (prevState >= newCard950.length - 1) return (prevState = 0);
-      else return (prevState += 1);
-    });
-  };
-
-  const decrease950 = () => {
-    setChangeIndex((prevState) => {
-      if (prevState < 1) return (prevState = newCard950.length - 1);
-      else return (prevState -= 1);
-    });
-  };
-
-  const increase730 = () => {
-    setChangeIndex((prevState) => {
-      if (prevState >= newCard730.length - 1) return (prevState = 0);
-      else return (prevState += 1);
-    });
-  };
-
-  const decrease730 = () => {
-    setChangeIndex((prevState) => {
-      if (prevState < 1) return (prevState = newCard730.length - 1);
+      console.log(prevState, Math.ceil(latestBooks.length / multiplier) - 1);
+      if (prevState <= 0) return Math.ceil(latestBooks.length / multiplier) - 1;
       else return (prevState -= 1);
     });
   };
@@ -111,7 +68,9 @@ const CardCarousel = ({ cards, latestBooks, setLatestBooks }) => {
     <>
       <>
         <div className={className.latest_books__container}>
-          <h1 className={className.latest_section__title}>Latest books</h1>
+          <h1 className={className.latest_section__title}>
+            Latest books {multiplier.innerWidth}
+          </h1>
           {error && (
             <div className={classes.error_message__container}>
               <div className={classes.error_message}>ERROR OCCURED!</div>
@@ -126,47 +85,37 @@ const CardCarousel = ({ cards, latestBooks, setLatestBooks }) => {
               <div className={className.card_carousel__container}>
                 {newCard?.map((card, index) => {
                   return (
-                    index === changeIndex &&
-                    card.cards?.map((card, index) => {
-                      return (
-                        <div
-                          key={index}
-                          className={className.card_big__container}
-                        >
-                          <div className={className.card__container}>
-                            <a className={className.card__link} href="">
-                              <div className={className.card_image__container}>
-                                <img
-                                  className={className.card_img}
-                                  src={card.image}
-                                  alt=""
-                                />
-                              </div>
-                              <div
-                                className={
-                                  className.card_description__container
-                                }
-                              >
-                                <h2 className={className.card_title}>
-                                  {card.title}
-                                </h2>
-                              </div>
-                              <div className={className.read_more__container}>
-                                <BsBook size={20} color={"#d61c4e"} />
-                                <a
-                                  className={className.source_anchor}
-                                  target="_blank"
-                                >
-                                  <div className={className.read_more}>
-                                    Read more
-                                  </div>
-                                </a>
+                    <div key={index} className={className.card_big__container}>
+                      <div className={className.card__container}>
+                        <a className={className.card__link} href="">
+                          <div className={className.card_image__container}>
+                            <img
+                              className={className.card_img}
+                              src={card.image}
+                              alt=""
+                            />
+                          </div>
+                          <div
+                            className={className.card_description__container}
+                          >
+                            <h2 className={className.card_title}>
+                              {card.title}
+                            </h2>
+                          </div>
+                          <div className={className.read_more__container}>
+                            <BsBook size={20} color={"#d61c4e"} />
+                            <a
+                              className={className.source_anchor}
+                              target="_blank"
+                            >
+                              <div className={className.read_more}>
+                                Read more
                               </div>
                             </a>
                           </div>
-                        </div>
-                      );
-                    })
+                        </a>
+                      </div>
+                    </div>
                   );
                 })}
               </div>
@@ -188,136 +137,6 @@ const CardCarousel = ({ cards, latestBooks, setLatestBooks }) => {
                   />
                 </div>
               )}
-
-              <div className={className.card_carousel__container950}>
-                {newCard950?.map((card, index) => {
-                  return (
-                    index === changeIndex &&
-                    card.cards?.map((card, index) => {
-                      return (
-                        <div
-                          key={index}
-                          className={className.card_big__container}
-                        >
-                          <div className={className.card__container}>
-                            <a className={className.card__link} href="">
-                              <div className={className.card_image__container}>
-                                <img
-                                  className={className.card_img}
-                                  src={card.image}
-                                  alt=""
-                                />
-                              </div>
-                              <div
-                                className={
-                                  className.card_description__container
-                                }
-                              >
-                                <h2 className={className.card_title}>
-                                  {card.title}
-                                </h2>
-                              </div>
-                              <div className={className.read_more__container}>
-                                <BsBook size={20} color={"#d61c4e"} />
-                                <a
-                                  className={className.source_anchor}
-                                  target="_blank"
-                                >
-                                  <div className={className.read_more}>
-                                    Read more
-                                  </div>
-                                </a>
-                              </div>
-                            </a>
-                          </div>
-                        </div>
-                      );
-                    })
-                  );
-                })}
-              </div>
-              <div className={className.carousel__buttons950}>
-                <FaChevronLeft
-                  className={className.carousel_btn}
-                  onClick={decrease950}
-                  size={20}
-                  // color={"#d61c4e"}
-                  style={{ cursor: "pointer" }}
-                />
-                <FaChevronRight
-                  className={className.carousel_btn}
-                  onClick={increase950}
-                  size={20}
-                  // color={"#d61c4e"}
-                  style={{ cursor: "pointer" }}
-                />
-              </div>
-              <div className={className.card_carousel__container730}>
-                {newCard730?.map((card, index) => {
-                  return (
-                    index === changeIndex &&
-                    card.cards?.map((card, index) => {
-                      return (
-                        <div
-                          key={index}
-                          className={className.card_big__container}
-                        >
-                          <div className={className.card__container}>
-                            <a className={className.card__link} href="">
-                              <div className={className.card_image__container}>
-                                <img
-                                  className={className.card_img}
-                                  src={card.image}
-                                  alt=""
-                                />
-                              </div>
-                              <div
-                                className={
-                                  className.card_description__container
-                                }
-                              >
-                                <h2 className={className.card_title}>
-                                  {card.title}
-                                </h2>
-                              </div>
-                              <div className={className.read_more__container}>
-                                <BsBook size={20} color={"#d61c4e"} />
-                                <a
-                                  className={className.source_anchor}
-                                  target="_blank"
-                                >
-                                  <div
-                                    className={className.read_more}
-                                    style={{ cursor: "pointer" }}
-                                  >
-                                    Read more
-                                  </div>
-                                </a>
-                              </div>
-                            </a>
-                          </div>
-                        </div>
-                      );
-                    })
-                  );
-                })}
-              </div>
-              <div className={className.carousel__buttons730}>
-                <FaChevronLeft
-                  className={className.carousel_btn}
-                  onClick={decrease730}
-                  size={20}
-                  // color={"#d61c4e"}
-                  style={{ cursor: "pointer" }}
-                />
-                <FaChevronRight
-                  className={className.carousel_btn}
-                  onClick={increase730}
-                  size={20}
-                  // color={"#d61c4e"}
-                  style={{ cursor: "pointer" }}
-                />
-              </div>
             </>
           )}
         </div>
@@ -325,5 +144,4 @@ const CardCarousel = ({ cards, latestBooks, setLatestBooks }) => {
     </>
   );
 };
-
 export default CardCarousel;

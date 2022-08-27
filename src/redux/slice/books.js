@@ -10,14 +10,11 @@ const books = createSlice({
 
   reducers: {
     getBooksFetch: (state, action) => {
-      console.log(current(state));
       state.isLoading = true;
       state.error = false;
       return state;
     },
     getBooksSlice: (state, action) => {
-      console.log(current(state));
-      // SUCCESS //
       state.books = action.payload;
       state.isLoading = false;
       state.error = false;

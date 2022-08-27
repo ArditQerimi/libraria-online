@@ -227,12 +227,12 @@
 }
 
 @media only screen and (max-width: 1000px) {
-  .card_carousel__container {
+  /* .card_carousel__container {
     padding: 10px 0;
     text-align: center;
     display: none;
-  }
-  .card_carousel__container950 {
+  } */
+  /* .card_carousel__container950 {
     padding: 60px 0;
     display: flex;
     text-align: center;
@@ -250,7 +250,7 @@
 
   .carousel__buttons {
     display: none;
-  }
+  } */
 }
 
 @media only screen and (max-width: 850px) {

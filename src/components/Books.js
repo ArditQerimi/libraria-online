@@ -86,7 +86,7 @@ const Books = ({
     setAddToFav(!addToFav);
   };
 
-  const newBooksArr = [...latestBooks].reverse();
+  const newBooksArr = [...latestBooks];
   // console.log(newBooksArr);
 
   const [currentPage, setCurrentPage] = useState(1);
