@@ -5,7 +5,7 @@ import axios from "axios";
 const HeroSection = (props) => {
   const [searchTerm, setSearchTerm] = useState("");
   console.log(searchTerm);
-  const [data, setData] = useState();
+  const [data, setData] = useState([]);
   const handleSearch = (e) => {
     e.stopPropagation();
 
