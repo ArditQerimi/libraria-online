@@ -14,8 +14,7 @@ const HeroSection = (props) => {
 
   async function fetchData() {
     const req = await axios.get(
-      `http://libraria-online.herokuapp.com/search?title=${searchTerm}`
-//       `http://localhost:8080/search?title=${searchTerm}`
+  `http://libraria-online.herokuapp.com/search?title=${searchTerm}`
     );
     console.log(req.data.products);
     const data = req.data.products;
